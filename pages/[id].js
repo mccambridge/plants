@@ -1,24 +1,23 @@
 import { withSSRContext } from 'aws-amplify'
-import { Post } from '../../src/models'
-import Markdown from 'react-markdown'
+import { Plant } from '../src/models'
 import { useRouter } from 'next/router'
 
-export default function PostComponent({ post }) {
+export default function PlantComponent({ plant }) {
   const router = useRouter()
   if (router.isFallback) {
     return <div>Loading...</div>
   }
   return (
     <div>
-      <Markdown children={post.content} />
+      <h1>{plant.name}</h1>
     </div>
   )
 }
 
 export async function getStaticPaths(req) {
   const { DataStore } = withSSRContext(req)
-  const posts = await DataStore.query(Post)
-  const paths = posts.map(post => ({ params: { id: post.id }}))
+  const plants = await DataStore.query(Plant)
+  const paths = plants.map(plant => ({ params: { id: plant.id }}))
   return {
     paths,
     fallback: true,
@@ -29,11 +28,11 @@ export async function getStaticProps (req) {
   const { DataStore } = withSSRContext(req)
   const { params } = req
   const { id } = params
-  const post = await DataStore.query(Post, id)
+  const plant = await DataStore.query(plant, id)
 
   return {
     props: {
-      post: JSON.parse(JSON.stringify(post))
+      plant: JSON.parse(JSON.stringify(plant))
     },
     revalidate: 1
   }

@@ -19,11 +19,10 @@ export default function Home() {
 
   return (
     <div className={styles.container}>
-      {console.log('plants', plants)}
       <h1>Plants</h1>
       {
         plants.map(plant => (
-          <Link href={`/plants/${plant.id}`}>
+          <Link key={plant.id} href={`/plants/${plant.id}`}>
             <a>
               <h2>{plant.name}</h2>
             </a>
