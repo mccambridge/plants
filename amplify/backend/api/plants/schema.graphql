@@ -1,0 +1,30 @@
+type Plant @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  name: String!
+  scientificName: String!
+  nursery: Nursery!
+  status: PlantStatus!
+  memberID: ID! @index(name: "byMember")
+}
+
+type Member @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  lastName: String!
+  firstName: String!
+  email: AWSEmail!
+  username: String!
+  displayName: String
+  Plants: [Plant] @hasMany(indexName: "byMember", fields: ["id"])
+}
+
+enum PlantStatus {
+  AVAILABLE
+  CHECKEDOUT
+}
+
+enum Nursery {
+  SEANSPLANTS
+  PTPLANTS
+  FRIENDLYPLANTS
+}
+ 
